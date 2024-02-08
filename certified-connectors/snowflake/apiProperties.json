@@ -5,7 +5,6 @@
         "type": "oauthSetting",
         "oAuthSettings": {
           "identityProvider": "aad",
-          "clientId": "54fbf434-4502-41d8-96a6-8e4fbe598e98",
           "scopes": [],
           "redirectMode": "Global",
           "redirectUrl": "https://global.consent.azure-apim.net/redirect",
@@ -40,6 +39,45 @@
             "required": "false",
             "hidden": "true"
           }
+        }
+      },
+      "token:clientId": {
+        "type": "string",
+        "uiDefinition": {
+          "constraints": {
+            "clearText": false,
+            "required": "true",
+            "tabIndex": 0
+          },
+          "description": "Registered app's' client id",
+          "displayName": "Client ID",
+          "tooltip": "App Client ID"
+        }
+      },
+      "token:clientSecret": {
+        "type": "securestring",
+        "uiDefinition": {
+          "constraints": {
+            "clearText": false,
+            "required": "true",
+            "tabIndex": 1
+          },
+          "description": "Registered app's client secret'",
+          "displayName": "Client Secret",
+          "tooltip": "App Client Secret"
+        }
+      },
+      "token:resourceUri": {
+        "type": "string",
+        "uiDefinition": {
+          "constraints": {
+            "clearText": false,
+            "required": "true",
+            "tabIndex": 2
+          },
+          "description": "Resource URL / Audience URL",
+          "displayName": "Resource URL",
+          "tooltip": "Resource URL / Audience URL"
         }
       }
     },
