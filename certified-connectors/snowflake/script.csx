@@ -1,8 +1,3 @@
-using System.Net;
-using System.Runtime.Remoting.Contexts;
-using System.Threading.Tasks;
-using System;
-
 public class Script : ScriptBase
 {
     #region Constants
@@ -135,19 +130,26 @@ public class Script : ScriptBase
                 newRows.Add(newRow);
             }
 
-            var result = new ConnectorResponse
+            var partitionInfo = contentAsJson[Attr_Metadata]["partitionInfo"].ToString();
+            IList<SnowflakePartitionInfo> snowflakePartitions = JsonConvert.DeserializeObject<IList<SnowflakePartitionInfo>>(partitionInfo);
+
+            var snowflakeMetadata = new SnowflakeResponseMetadata
+            {
+                Rows = Convert.ToInt64(contentAsJson[Attr_Metadata]["numRows"]),
+                Format = contentAsJson[Attr_Metadata]["format"].ToString(),
+                Code = contentAsJson["code"].ToString(),
+                StatementStatusUrl = contentAsJson["statementStatusUrl"].ToString(),
+                RequestId = contentAsJson["requestId"].ToString(),
+                SqlState = contentAsJson["sqlState"].ToString(),
+                StatementHandle = contentAsJson["statementHandle"].ToString(),
+                CreatedOn = ConvertToUTC(contentAsJson["createdOn"].ToString(), TimeInterval.Milliseconds)
+            };
+
+            var result = new SnowflakeResponse
             {
                 Data = newRows,
-                Metadata = new ConnectorResponseMetadata
-                {
-                    Rows = Convert.ToInt64(contentAsJson[Attr_Metadata]["numRows"]),
-                    Code = contentAsJson["code"].ToString(),
-                    StatementStatusUrl = contentAsJson["statementStatusUrl"].ToString(),
-                    RequestId = contentAsJson["requestId"].ToString(),
-                    SqlState = contentAsJson["sqlState"].ToString(),
-                    StatementHandle = contentAsJson["statementHandle"].ToString(),
-                    CreatedOn = ConvertToUTC(contentAsJson["createdOn"].ToString(), TimeInterval.Milliseconds)
-                }
+                Partitions = snowflakePartitions,
+                Metadata = snowflakeMetadata
             };
 
             var responseObj = new HttpResponseMessage(HttpStatusCode.OK)
@@ -201,9 +203,11 @@ public class Script : ScriptBase
         Milliseconds = 2,
     }
 
-    public class ConnectorResponseMetadata
+    public class SnowflakeResponseMetadata
     {
         public long Rows { get; set; }
+
+        public string? Format { get; set; }
 
         public string? Code { get; set; }
 
@@ -218,10 +222,21 @@ public class Script : ScriptBase
         public string? CreatedOn { get; set; }
     }
 
-    public class ConnectorResponse
+    public class SnowflakePartitionInfo
     {
+        public int RowCount { get; set; }
+
+        public int? UncompressedSize { get; set; }
+
+        public int? CompressedSize { get; set; }
+    }
+
+    public class SnowflakeResponse
+    {
+        public IList<SnowflakePartitionInfo>? Partitions { get; set; }
+
         public object? Data { get; set; }
 
-        public ConnectorResponseMetadata? Metadata { get; set; }
+        public SnowflakeResponseMetadata? Metadata { get; set; }
     }
 }
