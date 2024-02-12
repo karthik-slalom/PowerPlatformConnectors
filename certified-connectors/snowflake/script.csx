@@ -1,3 +1,9 @@
+using System.Collections.Generic;
+using System.Net;
+using System.Runtime.Remoting.Contexts;
+using System.Threading.Tasks;
+using System;
+
 public class Script : ScriptBase
 {
     #region Constants
@@ -20,11 +26,6 @@ public class Script : ScriptBase
     private const string Snowflake_Type_Time = "time";
 
     #endregion
-
-    public async Task<HttpResponseMessage> TestMethod(string content)
-    {
-        return await ConvertToObjects(content);
-    }
 
     public override async Task<HttpResponseMessage> ExecuteAsync()
     {

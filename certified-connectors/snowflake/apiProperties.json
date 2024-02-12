@@ -21,7 +21,7 @@
               "value": "common"
             },
             "resourceUri": {
-              "value": "https://api.slalomkarthik.onmicrosoft.com/powerplatform/connector"
+              "value": "<<resource app id uri>>"
             },
             "enableOnbehalfOfLogin": {
               "value": "false"
@@ -49,9 +49,9 @@
             "required": "true",
             "tabIndex": 0
           },
-          "description": "Registered app's' client id",
+          "description": "Snowflake OAuth Client ID",
           "displayName": "Client ID",
-          "tooltip": "App Client ID"
+          "tooltip": "Snowflake OAuth Client ID"
         }
       },
       "token:clientSecret": {
@@ -62,9 +62,9 @@
             "required": "true",
             "tabIndex": 1
           },
-          "description": "Registered app's client secret'",
+          "description": "Snowflake OAuth Client Secret",
           "displayName": "Client Secret",
-          "tooltip": "App Client Secret"
+          "tooltip": "Snowflake OAuth Client Secret"
         }
       },
       "token:resourceUri": {
@@ -75,14 +75,26 @@
             "required": "true",
             "tabIndex": 2
           },
-          "description": "Resource URL / Audience URL",
+          "description": "Snowflake OAuth Audience URL (Resource URL)",
           "displayName": "Resource URL",
-          "tooltip": "Resource URL / Audience URL"
+          "tooltip": "Snowflake OAuth Audience URL (Resource URL)"
         }
       }
     },
     "iconBrandColor": "#29B5E8",
     "capabilities": [],
+    "policyTemplateInstances": [
+      {
+        "templateId": "setheader",
+        "title": "User Agent",
+        "parameters": {
+          "x-ms-apimTemplateParameter.name": "User-Agent",
+          "x-ms-apimTemplateParameter.value": "PowerApp-Snowflake",
+          "x-ms-apimTemplateParameter.existsAction": "override",
+          "x-ms-apimTemplate-policySection": "Request"
+        }
+      }
+    ],
     "publisher": "Snowflake Inc.",
     "stackOwner": "Snowflake Inc."
   }
